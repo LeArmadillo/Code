@@ -1,0 +1,678 @@
+Comparing files W16_22.cpp and W15_33.CPP
+***** W16_22.cpp
+#include <fstream>
+#include <cmath>
+
+***** W15_33.CPP
+#include <fstream>
+
+*****
+
+***** W16_22.cpp
+
+struct annotationBackpackData   
+{
+***** W15_33.CPP
+
+struct perBackpackData  
+{
+*****
+
+***** W16_22.cpp
+        bool left;
+        bool leftOccl;
+        bool right;
+        bool rightOccl;
+        bool rect;
+***** W15_33.CPP
+        bool left;
+        bool lo;
+        bool right;
+        bool ro;
+        bool rect;
+*****
+
+***** W16_22.cpp
+ 
+ //void IB_edgeAnalysis( Mat frameE, Mat bsEMask, Mat &edgeSobel, Mat &edgeCanny );
+ bool IB_edgeAnalysis( Mat frameE, Mat bsEMask, Mat &edgeSobel, Mat &edgeCanny, cv::Rect &location );
+ Mat edgeThining( Mat frameET );
+***** W15_33.CPP
+ 
+ bool IB_edgeAnalysis( Mat frameE, Mat bsEMask, cv::Rect &location );
+ Mat edgeThining( Mat frameET );
+*****
+
+***** W16_22.cpp
+ bool edgeCount( Mat &frameEC, cv::Rect &location );
+ bool edgeCountSansOrientation( Mat &frameEC, cv::Rect &location );
+ 
+***** W15_33.CPP
+ bool edgeCount( Mat &frameEC, cv::Rect &location );
+ 
+*****
+
+***** W16_22.cpp
+
+ void IB_HOG( Mat &wholeROI, Mat &bsMaskROI );
+ void IB_HOG_helper( Mat strapRegion );
+
+ /** Global variables */
+***** W15_33.CPP
+
+ /** Global variables */
+*****
+
+***** W16_22.cpp
+ int* numBackpackLikeFeatures;
+ annotationBackpackData** PointerToPointerData;
+ foundBackpack* bpa;            // array of found backpacks
+***** W15_33.CPP
+ int* numBackpackLikeFeatures;
+ perBackpackData** PointerToPointerData;
+ //perBackpackData* PointerToData;
+ foundBackpack* bpa;            // array of found backpacks
+*****
+
+***** W16_22.cpp
+        myfile.close();
+        cvWaitKey(0);
+}
+***** W15_33.CPP
+        myfile.close();
+}
+*****
+
+***** W16_22.cpp
+        */
+        
+        sprintf( vidname, "C:/Users/Ian Beatty-Orr/Documents/Y5 Eng/5E1/Recordings/M4H00707.MP4.AVI" );
+        sprintf( annotatename, "C:/Users/Ian Beatty-Orr/Documents/Y5 Eng/5E1/Recordings/Annotations/IB_A_707" );
+        //cout << endl << "CALLING NEXT VIDIEO: " << num << endl << vidname << endl << annotatename << endl << endl;
+***** W15_33.CPP
+        */
+        sprintf( vidname, "C:/Users/Ian Beatty-Orr/Documents/Y5 Eng/5E1/Recordings/M4H00747.MP4.AVI" );
+        sprintf( annotatename, "C:/Users/Ian Beatty-Orr/Documents/Y5 Eng/5E1/Recordings/Annotations/IB_A_747" );
+        //cout << endl << "CALLING NEXT VIDIEO: " << num << endl << vidname << endl << annotatename << endl << endl;
+*****
+
+***** W16_22.cpp
+        char filename[100];
+        capture = cvCaptureFromAVI( vidname );
+***** W15_33.CPP
+        char filename[100];
+        //sprintf(filename, "C:/Users/Ian Beatty-Orr/Documents/Y5 Eng/5E1/Recordings/M4H00706.MP4.AVI");
+        capture = cvCaptureFromAVI( vidname );
+*****
+
+***** W16_22.cpp
+        numBackpackLikeFeatures = new int[vidLenght];
+        PointerToPointerData = new annotationBackpackData*[vidLenght];
+        Rect edgeLocation;
+***** W15_33.CPP
+        numBackpackLikeFeatures = new int[vidLenght];
+        PointerToPointerData = new perBackpackData*[vidLenght];
+        Rect edgeLocation;
+*****
+
+***** W16_22.cpp
+                Rect detectedLocation = Rect();
+                if( true )      {
+                        Mat edgeSobel, edgeCanny;
+                        //IB_edgeAnalysis( wholeROI, bsMaskROI, edgeSobel, edgeCanny );
+                        //if( edgeCount( edgeSobel, location ) )        {
+                        if( IB_edgeAnalysis( wholeROI, bsMaskROI, edgeSobel, edgeCanny, location ) )    {
+                                rectangle( wholeImage, Point( ROI_TL+location.tl() ), Point( ROI_TL+location.br() ), Scalar( 0,
+ 255, 0 ), 3 );
+                                Point trackingLocation = Point( ROI_TL.x + location.x + (location.width/2), ROI_TL.y + location
+.y + (location.height/2) );
+                                IB_trackObject( true, trackingLocation, wholeImage, trackingArray, frameCount );
+                                detectedLocation = Rect( Point( ROI_TL+location.tl() ), Point( ROI_TL+location.br() ) );
+                        }
+                        /*
+                        if( true && edgeCountSansOrientation( edgeCanny, location ) )   {
+                                
+                                rectangle( wholeImage, Point( ROI_TL+location.tl() ), Point( ROI_TL+location.br() ), Scalar( 25
+5, 0, 0 ), 3 );
+                                Point trackingLocation = Point( ROI_TL.x + location.x + (location.width/2), ROI_TL.y + location
+.y + (location.height/2) );
+                                IB_trackObject( true, trackingLocation, wholeImage, trackingArray, frameCount );
+                                detectedLocation = Rect( Point( ROI_TL+location.tl() ), Point( ROI_TL+location.br() ) );       
+
+                        }
+                        */
+                        
+                } 
+                //IB_HOG( wholeROI, bsMaskROI );
+                
+***** W15_33.CPP
+                Rect detectedLocation = Rect();
+                if( true && IB_edgeAnalysis( wholeROI, bsMaskROI, location ) )  {
+                        rectangle( wholeImage, Point( ROI_TL+location.tl() ), Point( ROI_TL+location.br() ), Scalar( 0, 255, 0 
+), 3 );
+
+                        Point trackingLocation = Point( ROI_TL.x + location.x + (location.width/2), ROI_TL.y + location.y + (lo
+cation.height/2) );
+                        IB_trackObject( true, trackingLocation, wholeImage, trackingArray, frameCount );
+                        detectedLocation = Rect( Point( ROI_TL+location.tl() ), Point( ROI_TL+location.br() ) );
+                } 
+                
+*****
+
+***** W16_22.cpp
+                Mat bsKMeansROI2 = bsKMeansROI;
+                //resize( wholeROI2, wholeROI2, Size( 5*wholeROI.cols, 5*wholeROI.rows ) );
+                //resize( bsROI2, bsROI2, Size( 5*bsROI.cols, 5*bsROI.rows ) );
+                //resize( bsKMeansROI2, bsKMeansROI2, Size( 5*bsKMeansROI.cols, 5*bsKMeansROI.rows ) );
+***** W15_33.CPP
+                Mat bsKMeansROI2 = bsKMeansROI;
+                resize( wholeROI2, wholeROI2, Size( 5*wholeROI.cols, 5*wholeROI.rows ) );
+                resize( bsROI2, bsROI2, Size( 5*bsROI.cols, 5*bsROI.rows ) );
+                //resize( bsKMeansROI2, bsKMeansROI2, Size( 5*bsKMeansROI.cols, 5*bsKMeansROI.rows ) );
+*****
+
+***** W16_22.cpp
+        hog.detectMultiScale(wholeImage, found, 0, Size(8,8), Size(0,0), 1.05, 2);
+        //delete hog;
+
+***** W15_33.CPP
+        hog.detectMultiScale(wholeImage, found, 0, Size(8,8), Size(0,0), 1.05, 2);
+
+*****
+
+***** W16_22.cpp
+
+bool IB_edgeAnalysis( Mat frameE, Mat bsEMask, Mat &edgeSobel, Mat &edgeCanny, cv::Rect &location )
+{
+***** W15_33.CPP
+
+bool IB_edgeAnalysis( Mat frameE, Mat bsEMask, cv::Rect &location )
+{
+*****
+
+***** W16_22.cpp
+        Mat t7;// = Mat( sizeE, CV_32FC1 );
+        Mat t8, t9;
+        Mat t7b, t6b, t5b, t4b;
+        Mat t0 = Mat( sizeE, CV_8UC1 );
+***** W15_33.CPP
+        Mat t7;// = Mat( sizeE, CV_32FC1 );
+        Mat t8A, t8B, t8C, t8D;
+        Mat t8, t9;
+        Mat t0 = Mat( sizeE, CV_8UC1 );
+*****
+
+***** W16_22.cpp
+        cvtColor( frameE, t2, CV_RGB2GRAY );
+
+        Canny( t2, t7b, 50, 100, 3 );
+        //Canny( B, t6b, 50, 100, 3 );
+        //Canny( G, t5b, 50, 100, 3 );
+        //Canny( R, t4b, 50, 100, 3 );
+
+        GaussianBlur( t2, t2, Size( 5, 5 ), 0 );
+***** W15_33.CPP
+        cvtColor( frameE, t2, CV_RGB2GRAY );
+        //Canny( t2, t6, 50, 100, 3 );
+        GaussianBlur( t2, t2, Size( 5, 5 ), 0 );
+*****
+
+***** W16_22.cpp
+        
+        Sobel( t2, t7, CV_16S, 1, 0, 7 );
+        Sobel( t2, t6, CV_16S, 1, 0, 7 );
+        Sobel( t2, t5, CV_16S, 1, 0, 7 );
+        Sobel( t2, t4, CV_16S, 1, 0, 7 );
+
+        inRange( t7, -15000, 32767, t8 );
+***** W15_33.CPP
+        
+        //t2.convertTo( t4, CV_8UC1 );
+        //Canny( t4, t3, 100, 200, 3, true );
+        //Sobel( t2, ori, CV_16S, 1, 1, 9 );
+        //Sobel( t2, loc, CV_16S, 2, 0, 9 );
+        
+        Sobel( t2, t7, CV_16S, 1, 0, 7 );
+        //Sobel( t2, t6, CV_16S, 1, 0, 7 );
+        //Sobel( t2, t5, CV_16S, 1, 0, 7 );
+        //Sobel( t2, t4, CV_16S, 1, 0, 7 );
+        /*
+        Canny( t2, t7, 50, 100, 3 );
+        Canny( B, t6, 50, 100, 3 );
+        Canny( G, t5, 50, 100, 3 );
+        Canny( R, t4, 50, 100, 3 );
+        */
+        /*
+        Laplacian( t2, t7, CV_8U, 1 );
+        Laplacian( t2, t6, CV_8U, 3 );
+        Laplacian( t2, t5, CV_8U, 5 );
+        Laplacian( t2, t4, CV_16U, 7 );
+        */
+
+        //Sobel( t2, gra2, CV_16S, 1, 1, 9 );
+        inRange( t7, -15000, 32767, t8 );
+*****
+
+***** W16_22.cpp
+                        if( t3.at<uchar>(row,col) == 0 )        {
+                                t3.at<uchar>(row,col) = 128;
+***** W15_33.CPP
+                        if( t3.at<uchar>(row,col) == 0 )        {
+                                //t0.at<uchar>(row,col) = 128;
+                                t3.at<uchar>(row,col) = 128;
+*****
+
+***** W16_22.cpp
+                        } else if( t3.at<uchar>(row,col) == 128 ) {
+                                t3.at<uchar>(row,col) = 0;
+***** W15_33.CPP
+                        } else if( t3.at<uchar>(row,col) == 128 ) {
+                                //t0.at<uchar>(row,col) = 0;
+                                t3.at<uchar>(row,col) = 0;
+*****
+
+***** W16_22.cpp
+
+        //edgeSobel = t1;
+        //edgeCanny = t7b;
+
+        
+        if( edgeCount( t1, location ) ) {
+***** W15_33.CPP
+
+        if( edgeCount( t1, location ) ) {
+*****
+
+***** W16_22.cpp
+        }
+        
+}
+***** W15_33.CPP
+        }
+}
+*****
+
+***** W16_22.cpp
+
+bool edgeCount( Mat &frameEC_IN, cv::Rect &location )
+{
+        Mat frameEC = frameEC_IN.clone();
+        Mat frameRDD; // = frameEC.clone();
+        cvtColor( frameEC, frameRDD, CV_GRAY2RGB );
+***** W15_33.CPP
+
+bool edgeCount( Mat &frameEC, cv::Rect &location )
+{
+        Mat frameRDD;
+        cvtColor( frameEC, frameRDD, CV_GRAY2RGB );
+*****
+
+***** W16_22.cpp
+        if( leftAbscent > 5 || rightAbscent > 5 )       {
+                frameRDD.deallocate();
+                return false;
+***** W15_33.CPP
+        if( leftAbscent > 5 || rightAbscent > 5 )       {
+                return false;
+*****
+
+***** W16_22.cpp
+                imshow( "DETECTED POINTS", frameRDD );
+                frameRDD.deallocate();
+                return true;
+***** W15_33.CPP
+                imshow( "DETECTED POINTS", frameRDD );
+                return true;
+*****
+
+***** W16_22.cpp
+        }
+        frameRDD.deallocate();
+        return false;
+***** W15_33.CPP
+        }
+        return false;
+*****
+
+***** W16_22.cpp
+
+bool edgeCountSansOrientation( Mat &frameEC, cv::Rect &location )
+        // Change to Contour Follower
+{
+        vector<vector<Point>> c0, a0;
+        vector<Vec4i> h0;
+        findContours( frameEC, c0, h0, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE );
+        // It would be nice to break sharp curves in contour lines here
+        int i = 0;
+        int l = c0.size();
+        Point* start = new Point[l];
+        Point* end = new Point[l];
+        double* contourOri = new double[l];
+        for( int i=0; i<l; i++ )        {
+                start[i] = c0[i].front();
+                end[i] = c0[i][c0[i].size()/2];
+                double deltaY = start[i].y - end[i].y;
+                double deltaX = start[i].x - end[i].x;
+                if( deltaX == 0 )       {
+                        cout << " DELTAxxx 0->1 " << endl;
+                        deltaX = 1;
+                }
+                if( deltaY == 0 )       {
+                        cout << " DELTAyyy 0->1 " << endl;
+                        deltaY = 1;
+                }
+                contourOri[i] = atan( deltaY/deltaX ) * 180/PI + 91;
+                cout << " JKJK ~~~~~~~ " << start[i] << "  ~~  " << end[i] << "  ~~  " << contourOri[i] << endl;
+        }       
+        
+        for( int j=0; j<l; j++ )        {
+                for( int k=0; k<l; k++ )        {
+                        if( contourOri[j] < contourOri[k]*2 && contourOri[j] > contourOri[k]*0.5 )      {
+                                if( ( start[j].x < start[k].x*2 && start[j].x > start[k].x*0.5 ) ||
+                                        ( start[j].x < end[k].x*2 && start[j].x > end[k].x*0.5 ) ||
+                                        ( end[j].x < start[k].x*2 && end[j].x > start[k].x*0.5 ) ||
+                                        ( end[j].x < end[k].x*2 && end[j].x > end[k].x*0.5 ) )  {
+                                                return true;
+                                                cout << "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" << endl;
+                                                // Needs to be changed so we can evaluate having multiple straps
+                                } else {
+                                        cout << "BBBBBBBBBBBBBBBBBBBBBBBBBBBBB" << endl;
+                                }
+                        } else {
+                                cout << "CCCCCCCCCCCCCCCCCCCCCCCCCCCC" << endl;
+                        }
+                }
+        }
+        //cout << "Not so nice contour" << endl;
+        return false;
+}
+***** W15_33.CPP
+
+void IB_BS( bool active, bool holefill, Mat BS_in, Mat &bsMask, Mat &BS_out )
+{
+        if( !active )   {
+                return;
+        }
+
+        BS_out.setTo( Scalar() );
+        Mat BS_mask, BS_C_mask;
+        pMOG2->operator()(BS_in, BS_mask, -1 );
+        //imshow( "A", BS_mask );
+        threshold( BS_mask, BS_mask, 250, 255, THRESH_BINARY );
+        //imshow( "B", BS_mask );
+        morphologyEx( BS_mask, BS_mask, MORPH_CLOSE, Mat(), Point(-1,-1), 4 );
+        morphologyEx( BS_mask, BS_mask, MORPH_OPEN, Mat(), Point(-1,-1), 1 );
+        //imshow( "C", BS_mask );
+        if( holefill )  {
+                vector<vector<Point>> c0, a0;
+                vector<Vec4i> h0;
+                findContours( BS_mask, c0, h0, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE );
+                cvtColor( BS_mask, BS_C_mask, CV_GRAY2BGR );
+                //imshow( "D", BS_mask );
+                contourAmalgamator( c0, a0 );
+                drawContours( BS_mask, a0, -1, uchar( 255 ), CV_FILLED );
+                //Mat BS_D_mask = BS_mask.clone();
+                //hullPlotter( BS_C_mask, c0, "HULL FOUR", 1300, 250, BS_D_mask );
+                hullPlotter( BS_C_mask, a0, "HULL A FOUR", 1300, 650, BS_mask );
+                //drawContours( BS_C_mask, c0, -1, Scalar( 0, 0, 255 ), CV_FILLED );
+        }
+        
+        
+        //hullPlotter( BS_C_mask, a0, "HULL A FOUR", 1300, 650, BS_mask );
+        BS_in.copyTo( BS_out, BS_mask );
+        bsMask = BS_mask;
+}
+*****
+
+***** W16_22.cpp
+
+void IB_BS( bool active, bool holefill, Mat BS_in, Mat &bsMask, Mat &BS_out )
+{
+        if( !active )   {
+                return;
+        }
+
+        BS_out.setTo( Scalar() );
+        Mat BS_mask, BS_C_mask;
+        pMOG2->operator()(BS_in, BS_mask, -1 );
+        //imshow( "A", BS_mask );
+        threshold( BS_mask, BS_mask, 250, 255, THRESH_BINARY );
+        //imshow( "B", BS_mask );
+        morphologyEx( BS_mask, BS_mask, MORPH_CLOSE, Mat(), Point(-1,-1), 4 );
+        morphologyEx( BS_mask, BS_mask, MORPH_OPEN, Mat(), Point(-1,-1), 1 );
+        //imshow( "C", BS_mask );
+        if( holefill )  {
+                vector<vector<Point>> c0, a0;
+                vector<Vec4i> h0;
+                findContours( BS_mask, c0, h0, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE );
+                cvtColor( BS_mask, BS_C_mask, CV_GRAY2BGR );
+                //imshow( "D", BS_mask );
+                contourAmalgamator( c0, a0 );
+                drawContours( BS_mask, a0, -1, uchar( 255 ), CV_FILLED );
+                //Mat BS_D_mask = BS_mask.clone();
+                //hullPlotter( BS_C_mask, c0, "HULL FOUR", 1300, 250, BS_D_mask );
+                hullPlotter( BS_C_mask, a0, "HULL A FOUR", 1300, 650, BS_mask );
+                //drawContours( BS_C_mask, c0, -1, Scalar( 0, 0, 255 ), CV_FILLED );
+        }
+        
+        
+        //hullPlotter( BS_C_mask, a0, "HULL A FOUR", 1300, 650, BS_mask );
+        BS_in.copyTo( BS_out, BS_mask );
+        bsMask = BS_mask;
+}
+***** W15_33.CPP
+
+void fillHorrizontalRegions( Mat &BS_mask, vector<vector<Point>> c0 )
+{
+        Mat temp = BS_mask.clone();
+        int fl=0, fr=0;
+        for( size_t i=0; i<c0.size(); i++ )     {
+                temp.setTo( Scalar() );
+                drawContours( temp, c0, i, Scalar( 255 ) );
+                for( int row=0; row<temp.rows; row++ )  {
+                        fl = fr = -1;
+                        for( int col=0; col<temp.cols; col++ )  {
+                                if( temp.at<uchar>(row, col) == 255 )   {
+                                        if( fl < 0 )    {
+                                                fl = col;
+                                        } else if( col > fr )   {
+                                                fr = col;
+                                        }
+                                }
+                        }
+                        for( int col2=fl; col2<fr; col2++ )     {
+                                BS_mask.at<uchar>(row, col2) = 255;
+                        }
+                }
+        }
+}
+*****
+
+***** W16_22.cpp
+
+void fillHorrizontalRegions( Mat &BS_mask, vector<vector<Point>> c0 )
+{
+        Mat temp = BS_mask.clone();
+        int fl=0, fr=0;
+        for( size_t i=0; i<c0.size(); i++ )     {
+                temp.setTo( Scalar() );
+                drawContours( temp, c0, i, Scalar( 255 ) );
+                for( int row=0; row<temp.rows; row++ )  {
+                        fl = fr = -1;
+                        for( int col=0; col<temp.cols; col++ )  {
+                                if( temp.at<uchar>(row, col) == 255 )   {
+                                        if( fl < 0 )    {
+                                                fl = col;
+                                        } else if( col > fr )   {
+                                                fr = col;
+                                        }
+                                }
+                        }
+                        for( int col2=fl; col2<fr; col2++ )     {
+                                BS_mask.at<uchar>(row, col2) = 255;
+                        }
+                }
+        }
+}
+
+void hullPlotter( Mat src, vector<vector<Point>> contour, string name, int x, int y, Mat &mask )
+***** W15_33.CPP
+
+void hullPlotter( Mat src, vector<vector<Point>> contour, string name, int x, int y, Mat &mask )
+*****
+
+***** W16_22.cpp
+                        numBackpackLikeFeatures[num] = bagnum;
+                        PointerToPointerData[num] = new annotationBackpackData[bagnum];
+                }
+***** W15_33.CPP
+                        numBackpackLikeFeatures[num] = bagnum;
+                        PointerToPointerData[num] = new perBackpackData[bagnum];
+                }
+*****
+
+***** W16_22.cpp
+                        for( int i=0; i<bagnum; i++ )   {
+                                annotationBackpackData x = PointerToPointerData[num][i];
+                                annotation.get( character );
+***** W15_33.CPP
+                        for( int i=0; i<bagnum; i++ )   {
+                                perBackpackData x = PointerToPointerData[num][i];
+                                annotation.get( character );
+*****
+
+***** W16_22.cpp
+                                annotation.get( character );
+                                x.leftOccl = character - '0';
+                                annotation.get( character );
+***** W15_33.CPP
+                                annotation.get( character );
+                                x.lo = character - '0';
+                                annotation.get( character );
+*****
+
+***** W16_22.cpp
+                                annotation.get( character );
+                                x.rightOccl = character - '0';
+                                annotation.get( character );
+***** W15_33.CPP
+                                annotation.get( character );
+                                x.ro = character - '0';
+                                annotation.get( character );
+*****
+
+***** W16_22.cpp
+        
+        annotationBackpackData backpack = PointerToPointerData[frameCount][0];
+        if( edgeLocation.x == NULL )    {
+***** W15_33.CPP
+        
+        perBackpackData backpack = PointerToPointerData[frameCount][0];
+        if( edgeLocation.x == NULL )    {
+*****
+
+Resync Failed.  Files are too different.
+***** W16_22.cpp
+
+void IB_HOG( Mat &wholeROI_IN, Mat &bsMaskROI_IN )
+{
+        Mat wholeROI = wholeROI_IN.clone();
+        Mat bsMaskROI = bsMaskROI_IN.clone();
+
+        int s[3], r[3], l[3];
+        s[0] = bsMaskROI.rows/4;
+        s[1] = 2*s[0];
+        s[2] = 3*s[0];
+
+        for( int col=0; col<bsMaskROI.cols; col++ )     {
+                if( bsMaskROI.at<uchar>(s[0],col) == 255 )      {
+                        wholeROI.at<Vec3b>(s[0],col) = Vec3b( 255, 255, 255 );
+                        l[0] = col;
+                        break;
+                }
+        }
+        for( int col=0; col<bsMaskROI.cols; col++ )     {
+                if( bsMaskROI.at<uchar>(s[1],col) == 255 )      {
+                        wholeROI.at<Vec3b>(s[1],col) = Vec3b( 255, 255, 255 );
+                        l[1] = col;
+                        break;
+                }
+        }
+        for( int col=0; col<bsMaskROI.cols; col++ )     {
+                if( bsMaskROI.at<uchar>(s[2],col) == 255 )      {
+                        wholeROI.at<Vec3b>(s[2],col) = Vec3b( 255, 255, 255 );
+                        l[2] = col;
+                        break;
+                }
+        }
+
+        for( int col=bsMaskROI.cols-1; col>=0; col-- )  {
+                if( bsMaskROI.at<uchar>(s[0],col) == 255 )      {
+                        wholeROI.at<Vec3b>(s[0],col) = Vec3b( 255, 255, 255 );
+                        r[0] = col;
+                        break;
+                }
+        }
+        for( int col=bsMaskROI.cols-1; col>=0; col-- )  {
+                if( bsMaskROI.at<uchar>(s[1],col) == 255 )      {
+                        wholeROI.at<Vec3b>(s[1],col) = Vec3b( 255, 255, 255 );
+                        r[1] = col;
+                        break;
+                }
+        }
+        for( int col=bsMaskROI.cols-1; col>=0; col-- )  {
+                if( bsMaskROI.at<uchar>(s[2],col) == 255 )      {
+                        wholeROI.at<Vec3b>(s[2],col) = Vec3b( 255, 255, 255 );
+                        r[2] = col;
+                        break;
+                }
+        }
+
+        if( l[1] < l[0] )       {
+                l[0] = l[1];
+        }
+        if( l[2] < l[0] )       {
+                l[0] = l[2];
+        }
+        if( r[1] > r[0] )       {
+                r[0] = r[1];
+        }
+        if( r[2] > r[0] )       {
+                r[0] = r[2];
+        }
+        if( l[0] < 0 )  {
+                l[0] = 0;
+        }
+        if( r[0] < 0 )  {
+                r[0] = wholeROI.cols-1;
+        }
+
+        int width = (r[0] - l[0])/4;
+
+        int height = wholeROI.rows;
+        if( height%3 == 0 )     {
+                height = height - 1;
+        } else if( height%3 == 1 )      {
+                height = height - 2;
+        }
+        if( width%3 == 0 )      {
+                width = width - 1;
+        } else if( width%3 == 1 )       {
+                width = width - 2;
+        }
+
+        Mat leftStrapRegion = wholeROI( Rect( l[0], 0, width, height ) );
+        Mat rightStrapRegion = wholeROI( Rect( r[0]-width, 0, width, height ) );
+
+        if( leftStrapRegion.cols < 11 || leftStrapRegion.rows < 11 )    {
+                cout << "ERROR: leftStrapRegion is too small for custom HOG method!" << endl;
+        } else {
+                IB_HOG_helper( leftStrapRegion );
+        }
+        if( rightStrapRegion.cols < 11 || rightStrapRegion.rows < 11 )  {
+                cout << "ERROR: leftStrapRegion is too small for custom HOG method!" << endl;
+        } else {
+                IB_HOG_helper( rightStrapRegion );
+***** W15_33.CPP
+*****
+
